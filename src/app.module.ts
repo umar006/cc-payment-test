@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import databaseConfig from './database.config';
+import { drizzleProvider } from './drizzle.provider';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import databaseConfig from './database.config';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, drizzleProvider],
 })
 export class AppModule {}
