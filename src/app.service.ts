@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
+import { users } from './user.schema';
+import { eq, sql } from 'drizzle-orm';
 
 @Injectable()
 export class AppService {
@@ -6,9 +9,16 @@ export class AppService {
     balance: parseFloat((10000.0).toFixed(2)),
   };
 
+  constructor(
+    @Inject(DRIZZLE_PROVIDER)
+    private readonly db: DrizzlePostgres,
+  ) {}
+
   async deposit(depositDto: Record<string, any>) {
+    const fullName = 'Umar Abdul Aziz Al-Faruq';
+
     await fetch('https://youdomain.com/deposit', {
-      signal: AbortSignal.timeout(1000),
+      signal: AbortSignal.timeout(100),
       method: 'POST',
       headers: {
         Authorization: `Bearer ${btoa('Umar Abdul Aziz Al-Faruq')}`,
@@ -16,7 +26,21 @@ export class AppService {
       body: JSON.stringify(depositDto),
     }).catch((e) => e);
 
-    this.wallet.balance += depositDto.amount;
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.name, fullName));
+
+    if (!user) {
+      await this.db.insert(users).values({
+        name: 'Umar Abdul Aziz Al-Faruq',
+        balance: depositDto.amount,
+      });
+    } else {
+      await this.db
+        .update(users)
+        .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
+    }
 
     return {
       order_id: depositDto.order_id,
@@ -27,7 +51,7 @@ export class AppService {
 
   async withdraw(withdrawDto: Record<string, any>) {
     await fetch('https://youdomain.com/withdraw', {
-      signal: AbortSignal.timeout(1000),
+      signal: AbortSignal.timeout(100),
       method: 'POST',
       headers: {
         Authorization: `Bearer ${btoa('Umar Abdul Aziz Al-Faruq')}`,
