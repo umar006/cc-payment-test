@@ -11,6 +11,12 @@ export class AppController {
     return response;
   }
 
+  @Post('withdraw')
+  async withdraw(@Body() withdrawDto: Record<string, any>) {
+    const response = await this.appService.withdraw(withdrawDto);
+    return response;
+  }
+
   @Get()
   getHello(): string {
     return this.appService.getHello();
