@@ -1,12 +1,37 @@
-import { type FormEvent, useState } from 'react';
-import './App.css';
+import { type FormEvent, useState } from "react";
+import "./App.css";
+import { useMutation } from "@tanstack/react-query";
+
+type Deposit = {
+  order_id: string;
+  amount: string;
+  timestamp: Date;
+};
 
 function App() {
-  const [deposit, setDeposit] = useState('0');
-  const [withdraw, setWithdraw] = useState('0');
+  const [deposit, setDeposit] = useState("0");
+  const [withdraw, setWithdraw] = useState("0");
+
+  const mutateDeposit = useMutation({
+    mutationFn: (deposit: Deposit) => {
+      return fetch("http://localhost:3000/deposit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(deposit),
+      });
+    },
+  });
 
   const handleDepositSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const createDeposit: Deposit = {
+      order_id: window.crypto.randomUUID(),
+      amount: parseFloat(deposit).toFixed(2),
+      timestamp: new Date(),
+    };
+    mutateDeposit.mutate(createDeposit);
   };
 
   const handleWithdrawSubmit = (e: FormEvent<HTMLFormElement>) => {
