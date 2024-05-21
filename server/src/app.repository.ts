@@ -52,12 +52,12 @@ export class AppRepository {
       if (err instanceof TypeError) {
         throw new InternalServerErrorException(err.message);
       }
-      throw new InternalServerErrorException('unhandle errro');
+      throw new InternalServerErrorException('unhandle error');
     }
   }
 
   async withdraw(fullName: string, withdrawDto: Record<string, any>) {
-    return await this.db.transaction(async (tx) => {
+    await this.db.transaction(async (tx) => {
       const [user] = await tx
         .select()
         .from(users)
@@ -69,7 +69,9 @@ export class AppRepository {
           balance: '0',
         });
       } else {
-        if (user.balance < withdrawDto.amount) {
+        const checkBalance =
+          parseFloat(user.balance) < parseFloat(withdrawDto.amount);
+        if (checkBalance) {
           throw new UnprocessableEntityException('Insufficient balance');
         }
 
@@ -77,6 +79,14 @@ export class AppRepository {
           .update(users)
           .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
       }
+
+      await tx.insert(histories).values({
+        createdAt: new Date(withdrawDto.timestamp),
+        amount: withdrawDto.amount,
+        type: 'withdraw',
+        status: 1,
+        name: fullName,
+      });
     });
   }
 
