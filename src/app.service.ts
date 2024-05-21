@@ -93,7 +93,14 @@ export class AppService {
   }
 
   async balance() {
-    return this.wallet;
+    const fullName = 'Umar Abdul Aziz Al-Faruq';
+
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.name, fullName));
+
+    return user;
   }
 
   getHello(): string {
