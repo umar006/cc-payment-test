@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
+import { AppRepository } from './app.repository';
 import { AppService } from './app.service';
 import databaseConfig from './database.config';
 import { drizzleProvider } from './drizzle.provider';
@@ -12,6 +13,6 @@ import { drizzleProvider } from './drizzle.provider';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, drizzleProvider],
+  providers: [AppService, AppRepository, drizzleProvider],
 })
 export class AppModule {}

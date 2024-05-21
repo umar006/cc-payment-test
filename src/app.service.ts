@@ -1,9 +1,11 @@
 import {
   Inject,
   Injectable,
+  InternalServerErrorException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
+import { AppRepository } from './app.repository';
 import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
 import { users } from './user.schema';
 
@@ -12,6 +14,7 @@ export class AppService {
   constructor(
     @Inject(DRIZZLE_PROVIDER)
     private readonly db: DrizzlePostgres,
+    private readonly appRepo: AppRepository,
   ) {}
 
   async deposit(depositDto: Record<string, any>) {
@@ -26,28 +29,11 @@ export class AppService {
       body: JSON.stringify(depositDto),
     }).catch((e) => e);
 
-    await this.db.transaction(
-      async (tx) => {
-        const [user] = await tx
-          .select()
-          .from(users)
-          .where(eq(users.name, fullName));
-
-        if (!user) {
-          await tx.insert(users).values({
-            name: 'Umar Abdul Aziz Al-Faruq',
-            balance: depositDto.amount,
-          });
-        } else {
-          await tx
-            .update(users)
-            .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
-        }
-      },
-      {
-        isolationLevel: 'serializable',
-      },
-    );
+    try {
+      await this.appRepo.deposit(fullName, depositDto);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
 
     return {
       order_id: depositDto.order_id,
