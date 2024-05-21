@@ -76,8 +76,8 @@ function App() {
           <input
             type="number"
             onChange={(e) => setDeposit(e.target.value)}
-            min="0"
-            step="any"
+            min="0.01"
+            step="0.01"
             value={deposit}
           />
         </label>
@@ -89,8 +89,8 @@ function App() {
           <input
             type="number"
             onChange={(e) => setWithdraw(e.target.value)}
-            min="0"
-            step="any"
+            min="0.01"
+            step="0.01"
             value={withdraw}
           />
         </label>
