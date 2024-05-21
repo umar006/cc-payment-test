@@ -1,18 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
-
-type Deposit = {
-  order_id: string;
-  amount: string;
-  timestamp: Date;
-};
-
-type Withdraw = {
-  order_id: string;
-  amount: string;
-  timestamp: Date;
-};
+import { type Deposit, type Withdraw } from "./types";
 
 function App() {
   const [deposit, setDeposit] = useState("0.00");
