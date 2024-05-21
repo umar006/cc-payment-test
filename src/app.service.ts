@@ -1,7 +1,7 @@
 import {
-    Inject,
-    Injectable,
-    UnprocessableEntityException,
+  Inject,
+  Injectable,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
@@ -26,25 +26,28 @@ export class AppService {
       body: JSON.stringify(depositDto),
     }).catch((e) => e);
 
-    await this.db.transaction(async (tx) => {
-      const [user] = await tx
-      .select()
-      .from(users)
-      .where(eq(users.name, fullName));
+    await this.db.transaction(
+      async (tx) => {
+        const [user] = await tx
+          .select()
+          .from(users)
+          .where(eq(users.name, fullName));
 
-      if (!user) {
-        await tx.insert(users).values({
-          name: 'Umar Abdul Aziz Al-Faruq',
-          balance: depositDto.amount,
-        });
-      } else {
-        await tx
-        .update(users)
-        .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
-      }
-    }, {
-      isolationLevel: 'serializable',
-    });
+        if (!user) {
+          await tx.insert(users).values({
+            name: 'Umar Abdul Aziz Al-Faruq',
+            balance: depositDto.amount,
+          });
+        } else {
+          await tx
+            .update(users)
+            .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
+        }
+      },
+      {
+        isolationLevel: 'serializable',
+      },
+    );
 
     return {
       order_id: depositDto.order_id,
@@ -65,25 +68,28 @@ export class AppService {
       body: JSON.stringify(withdrawDto),
     }).catch((e) => e);
 
-    const [user] = await this.db
-      .select()
-      .from(users)
-      .where(eq(users.name, fullName));
+    await this.db.transaction(async (tx) => {
+      const [user] = await tx
+        .select()
+        .from(users)
+        .where(eq(users.name, fullName));
 
-    if (!user) {
-      await this.db.insert(users).values({
-        name: 'Umar Abdul Aziz Al-Faruq',
-        balance: '0',
-      });
-    } else {
-      if (user.balance < withdrawDto.amount) {
-        throw new UnprocessableEntityException('Unsufficient balance');
+      if (!user) {
+        await tx.insert(users).values({
+          name: 'Umar Abdul Aziz Al-Faruq',
+          balance: '0',
+        });
+      } else {
+        if (user.balance < withdrawDto.amount) {
+          tx.rollback();
+          throw new UnprocessableEntityException('Insufficient balance');
+        }
+
+        await tx
+          .update(users)
+          .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
       }
-
-      await this.db
-        .update(users)
-        .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
-    }
+    });
 
     return {
       order_id: withdrawDto.order_id,
