@@ -54,28 +54,11 @@ export class AppService {
       body: JSON.stringify(withdrawDto),
     }).catch((e) => e);
 
-    await this.db.transaction(async (tx) => {
-      const [user] = await tx
-        .select()
-        .from(users)
-        .where(eq(users.name, fullName));
-
-      if (!user) {
-        await tx.insert(users).values({
-          name: 'Umar Abdul Aziz Al-Faruq',
-          balance: '0',
-        });
-      } else {
-        if (user.balance < withdrawDto.amount) {
-          tx.rollback();
-          throw new UnprocessableEntityException('Insufficient balance');
-        }
-
-        await tx
-          .update(users)
-          .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
-      }
-    });
+    try {
+      await this.appRepo.withdraw(fullName, withdrawDto);
+    } catch (err) {
+      throw err;
+    }
 
     return {
       order_id: withdrawDto.order_id,
