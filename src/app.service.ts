@@ -9,10 +9,6 @@ import { eq, sql } from 'drizzle-orm';
 
 @Injectable()
 export class AppService {
-  wallet = {
-    balance: parseFloat((10000.0).toFixed(2)),
-  };
-
   constructor(
     @Inject(DRIZZLE_PROVIDER)
     private readonly db: DrizzlePostgres,
