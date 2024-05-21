@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import './App.css';
 
 function App() {
   const [deposit, setDeposit] = useState('0');
   const [withdraw, setWithdraw] = useState('0');
 
+  const handleDepositSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  const handleWithdrawSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <h2>deposit</h2>
-      <form>
+      <form onSubmit={handleDepositSubmit}>
         <label>
           <input
             type="number"
@@ -20,7 +28,7 @@ function App() {
         <button type="submit">deposit</button>
       </form>
       <h2>withdraw</h2>
-      <form>
+      <form onSubmit={handleWithdrawSubmit}>
         <label>
           <input
             type="number"
