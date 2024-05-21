@@ -8,6 +8,12 @@ type Deposit = {
   timestamp: Date;
 };
 
+type Withdraw = {
+  order_id: string;
+  amount: string;
+  timestamp: Date;
+};
+
 function App() {
   const [deposit, setDeposit] = useState("0");
   const [withdraw, setWithdraw] = useState("0");
@@ -24,6 +30,18 @@ function App() {
     },
   });
 
+  const mutateWithdraw = useMutation({
+    mutationFn: (withdraw: Withdraw) => {
+      return fetch("http://localhost:3000/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(withdraw),
+      });
+    },
+  });
+
   const handleDepositSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const createDeposit: Deposit = {
@@ -36,6 +54,12 @@ function App() {
 
   const handleWithdrawSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const createWithdraw: Withdraw = {
+      order_id: window.crypto.randomUUID(),
+      amount: parseFloat(withdraw).toFixed(2),
+      timestamp: new Date(),
+    };
+    mutateWithdraw.mutate(createWithdraw);
   };
 
   return (
