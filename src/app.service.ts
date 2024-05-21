@@ -2,12 +2,10 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
-import { eq, sql } from 'drizzle-orm';
 import { AppRepository } from './app.repository';
 import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
-import { users } from './user.schema';
+import { User } from './user.schema';
 
 @Injectable()
 export class AppService {
@@ -67,15 +65,15 @@ export class AppService {
     };
   }
 
-  async balance() {
+  async balance(): Promise<User> {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
-    const [user] = await this.db
-      .select()
-      .from(users)
-      .where(eq(users.name, fullName));
-
-    return user;
+    try {
+      const user = await this.appRepo.balance(fullName);
+      return user;
+    } catch (err) {
+      throw err;
+    }
   }
 
   getHello(): string {

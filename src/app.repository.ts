@@ -3,9 +3,9 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
-import { users } from './user.schema';
 import { eq, sql } from 'drizzle-orm';
+import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
+import { User, users } from './user.schema';
 
 @Injectable()
 export class AppRepository {
@@ -61,5 +61,14 @@ export class AppRepository {
           .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
       }
     });
+  }
+
+  async balance(fullName: string): Promise<User> {
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.name, fullName));
+
+    return user;
   }
 }
