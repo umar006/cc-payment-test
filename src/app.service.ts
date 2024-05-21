@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
 import { users } from './user.schema';
 import { eq, sql } from 'drizzle-orm';
@@ -50,6 +54,8 @@ export class AppService {
   }
 
   async withdraw(withdrawDto: Record<string, any>) {
+    const fullName = 'Umar Abdul Aziz Al-Faruq';
+
     await fetch('https://youdomain.com/withdraw', {
       signal: AbortSignal.timeout(100),
       method: 'POST',
@@ -59,7 +65,25 @@ export class AppService {
       body: JSON.stringify(withdrawDto),
     }).catch((e) => e);
 
-    this.wallet.balance += -withdrawDto.amount;
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.name, fullName));
+
+    if (!user) {
+      await this.db.insert(users).values({
+        name: 'Umar Abdul Aziz Al-Faruq',
+        balance: '0',
+      });
+    } else {
+      if (user.balance < withdrawDto.amount) {
+        throw new UnprocessableEntityException('Unsufficient balance');
+      }
+
+      await this.db
+        .update(users)
+        .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
+    }
 
     return {
       order_id: withdrawDto.order_id,
