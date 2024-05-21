@@ -1,19 +1,10 @@
-import {
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AppRepository } from './app.repository';
-import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
 import { User } from './user.schema';
 
 @Injectable()
 export class AppService {
-  constructor(
-    @Inject(DRIZZLE_PROVIDER)
-    private readonly db: DrizzlePostgres,
-    private readonly appRepo: AppRepository,
-  ) {}
+  constructor(private readonly appRepo: AppRepository) {}
 
   async deposit(depositDto: Record<string, any>) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
