@@ -17,6 +17,12 @@ export class AppController {
     return response;
   }
 
+  @Get('balance')
+  async balance() {
+    const response = await this.appService.balance();
+    return response;
+  }
+
   @Get()
   getHello(): string {
     return this.appService.getHello();
