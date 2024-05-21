@@ -98,4 +98,9 @@ export class AppRepository {
 
     return user;
   }
+
+  async history() {
+    const historyList = await this.db.select().from(histories);
+    return historyList;
+  }
 }
