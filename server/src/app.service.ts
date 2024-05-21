@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AppRepository } from './app.repository';
 import { User } from './user.schema';
 
@@ -62,6 +62,15 @@ export class AppService {
     try {
       const user = await this.appRepo.balance(fullName);
       return user;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async history() {
+    try {
+      const historyList = await this.appRepo.history();
+      return historyList;
     } catch (err) {
       throw err;
     }
