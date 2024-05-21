@@ -21,7 +21,7 @@ export class AppService {
     try {
       await this.appRepo.deposit(fullName, depositDto);
     } catch (err) {
-      throw new InternalServerErrorException(err);
+      throw err;
     }
 
     return {
