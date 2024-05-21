@@ -23,6 +23,12 @@ export class AppController {
     return response;
   }
 
+  @Get('histories')
+  async transactionHistories() {
+    const response = await this.appService.transactionHistories();
+    return response;
+  }
+
   @Get()
   getHello(): string {
     return this.appService.getHello();
