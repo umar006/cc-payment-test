@@ -5,3 +5,5 @@ export const users = pgTable('users', {
   name: varchar('name').notNull(),
   balance: numeric('balance', { scale: 2 }).default('0'),
 });
+
+export type User = typeof users.$inferSelect;
