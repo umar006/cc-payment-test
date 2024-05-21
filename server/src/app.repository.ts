@@ -99,7 +99,7 @@ export class AppRepository {
     return user;
   }
 
-  async history() {
+  async transactionHistories() {
     const historyList = await this.db.select().from(histories);
     return historyList;
   }
