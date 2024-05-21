@@ -15,8 +15,8 @@ type Withdraw = {
 };
 
 function App() {
-  const [deposit, setDeposit] = useState("0");
-  const [withdraw, setWithdraw] = useState("0");
+  const [deposit, setDeposit] = useState("0.00");
+  const [withdraw, setWithdraw] = useState("0.00");
 
   const mutateDeposit = useMutation({
     mutationFn: (deposit: Deposit) => {
@@ -29,7 +29,7 @@ function App() {
       });
     },
     onSuccess: () => {
-      setDeposit("0");
+      setDeposit("0.00");
     },
   });
 
