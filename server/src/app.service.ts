@@ -67,9 +67,9 @@ export class AppService {
     }
   }
 
-  async history() {
+  async transactionHistories() {
     try {
-      const historyList = await this.appRepo.history();
+      const historyList = await this.appRepo.transactionHistories();
       return historyList;
     } catch (err) {
       throw err;
