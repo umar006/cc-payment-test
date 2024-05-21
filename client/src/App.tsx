@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
 
 type Deposit = {
@@ -68,6 +68,14 @@ function App() {
     mutateWithdraw.mutate(createWithdraw);
   };
 
+  const handleChangeDeposit = (e: ChangeEvent<HTMLInputElement>) => {
+    let depositVal = e.target.value;
+    if (depositVal === "") {
+      depositVal = "0.00";
+    }
+    setDeposit(depositVal);
+  };
+
   return (
     <>
       <h2>deposit</h2>
@@ -75,7 +83,7 @@ function App() {
         <label>
           <input
             type="number"
-            onChange={(e) => setDeposit(e.target.value)}
+            onChange={handleChangeDeposit}
             min="0.01"
             step="0.01"
             value={deposit}
