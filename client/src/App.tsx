@@ -44,7 +44,7 @@ function App() {
       });
     },
     onSuccess: () => {
-      setWithdraw("0");
+      setWithdraw("0.00");
     },
   });
 
@@ -76,6 +76,14 @@ function App() {
     setDeposit(depositVal);
   };
 
+  const handleChangeWithdraw = (e: ChangeEvent<HTMLInputElement>) => {
+    let withdrawVal = e.target.value;
+    if (withdrawVal === "") {
+      withdrawVal = "0.00";
+    }
+    setWithdraw(withdrawVal);
+  };
+
   return (
     <>
       <h2>deposit</h2>
@@ -96,7 +104,7 @@ function App() {
         <label>
           <input
             type="number"
-            onChange={(e) => setWithdraw(e.target.value)}
+            onChange={handleChangeWithdraw}
             min="0.01"
             step="0.01"
             value={withdraw}
