@@ -1,6 +1,6 @@
-import { type FormEvent, useState } from "react";
-import "./App.css";
 import { useMutation } from "@tanstack/react-query";
+import { useState, type FormEvent } from "react";
+import "./App.css";
 
 type Deposit = {
   order_id: string;
@@ -28,6 +28,9 @@ function App() {
         body: JSON.stringify(deposit),
       });
     },
+    onSuccess: () => {
+      setDeposit("0");
+    },
   });
 
   const mutateWithdraw = useMutation({
@@ -39,6 +42,9 @@ function App() {
         },
         body: JSON.stringify(withdraw),
       });
+    },
+    onSuccess: () => {
+      setWithdraw("0");
     },
   });
 
@@ -72,6 +78,7 @@ function App() {
             onChange={(e) => setDeposit(e.target.value)}
             min="0"
             step="any"
+            value={deposit}
           />
         </label>
         <button type="submit">deposit</button>
@@ -84,6 +91,7 @@ function App() {
             onChange={(e) => setWithdraw(e.target.value)}
             min="0"
             step="any"
+            value={withdraw}
           />
         </label>
         <button type="submit">withdraw</button>
