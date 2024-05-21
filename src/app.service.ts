@@ -44,6 +44,10 @@ export class AppService {
     };
   }
 
+  async balance() {
+    return this.wallet;
+  }
+
   getHello(): string {
     return 'Hello World!';
   }
