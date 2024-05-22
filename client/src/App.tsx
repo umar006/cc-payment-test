@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
+import {
+  createDeposit,
+  createWithdraw,
+  getHistories,
+} from "./services/transaction";
 import { type Deposit, type TransactionHistory, type Withdraw } from "./types";
 
 function App() {
@@ -9,38 +14,18 @@ function App() {
 
   const { data, isLoading } = useQuery<TransactionHistory[]>({
     queryKey: ["histories"],
-    queryFn: async () => {
-      const response = await fetch("http://localhost:3000/histories");
-      const data = await response.json();
-      return data;
-    },
+    queryFn: getHistories,
   });
 
   const mutateDeposit = useMutation({
-    mutationFn: (deposit: Deposit) => {
-      return fetch("http://localhost:3000/deposit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(deposit),
-      });
-    },
+    mutationFn: createDeposit,
     onSuccess: () => {
       setDeposit("0.00");
     },
   });
 
   const mutateWithdraw = useMutation({
-    mutationFn: (withdraw: Withdraw) => {
-      return fetch("http://localhost:3000/withdraw", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(withdraw),
-      });
-    },
+    mutationFn: createWithdraw,
     onSuccess: () => {
       setWithdraw("0.00");
     },
