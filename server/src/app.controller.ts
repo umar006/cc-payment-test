@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { DepositDTO } from './dtos/deposit.dto';
+import { WithdrawDTO } from './dtos/withdraw.dto';
 
 @Controller()
 export class AppController {
@@ -13,7 +14,7 @@ export class AppController {
   }
 
   @Post('withdraw')
-  async withdraw(@Body() withdrawDto: Record<string, any>) {
+  async withdraw(@Body() withdrawDto: WithdrawDTO) {
     const response = await this.appService.withdraw(withdrawDto);
     return response;
   }

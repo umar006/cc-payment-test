@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AppRepository } from './app.repository';
 import { DepositDTO } from './dtos/deposit.dto';
+import { WithdrawDTO } from './dtos/withdraw.dto';
 import { type User } from './user.schema';
 
 @Injectable()
@@ -35,7 +36,7 @@ export class AppService {
     };
   }
 
-  async withdraw(withdrawDto: Record<string, any>) {
+  async withdraw(withdrawDto: WithdrawDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     await fetch('https://youdomain.com/withdraw', {
@@ -44,7 +45,10 @@ export class AppService {
       headers: {
         Authorization: `Bearer ${btoa('Umar Abdul Aziz Al-Faruq')}`,
       },
-      body: JSON.stringify(withdrawDto),
+      body: JSON.stringify({
+        ...withdrawDto,
+        amount: parseFloat(withdrawDto.amount),
+      }),
     }).catch((e) => e);
 
     try {

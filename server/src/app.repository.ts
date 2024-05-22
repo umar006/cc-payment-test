@@ -7,6 +7,7 @@ import {
 import { eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
+import { WithdrawDTO } from './dtos/withdraw.dto';
 import { histories } from './transaction-history.schema';
 import { User, users } from './user.schema';
 
@@ -57,7 +58,7 @@ export class AppRepository {
     }
   }
 
-  async withdraw(fullName: string, withdrawDto: Record<string, any>) {
+  async withdraw(fullName: string, withdrawDto: WithdrawDTO) {
     await this.db.transaction(async (tx) => {
       const [user] = await tx
         .select()
