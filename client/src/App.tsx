@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
 import {
@@ -16,6 +16,8 @@ function App() {
   const [deposit, setDeposit] = useState("0.00");
   const [withdraw, setWithdraw] = useState("0.00");
 
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery<History[]>({
     queryKey: ["histories"],
     queryFn: getHistories,
@@ -24,6 +26,7 @@ function App() {
   const mutateDeposit = useMutation({
     mutationFn: createDeposit,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["histories"] });
       setDeposit("0.00");
     },
   });
@@ -31,6 +34,7 @@ function App() {
   const mutateWithdraw = useMutation({
     mutationFn: createWithdraw,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["histories"] });
       setWithdraw("0.00");
     },
   });
