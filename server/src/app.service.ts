@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { AppRepository } from './app.repository';
-import { User } from './user.schema';
+import { DepositDTO } from './dtos/deposit.dto';
+import { type User } from './user.schema';
 
 @Injectable()
 export class AppService {
   constructor(private readonly appRepo: AppRepository) {}
 
-  async deposit(depositDto: Record<string, any>) {
+  async deposit(depositDto: DepositDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     await fetch('https://youdomain.com/deposit', {
@@ -15,7 +16,10 @@ export class AppService {
       headers: {
         Authorization: `Bearer ${btoa('Umar Abdul Aziz Al-Faruq')}`,
       },
-      body: JSON.stringify(depositDto),
+      body: JSON.stringify({
+        ...depositDto,
+        amount: parseFloat(depositDto.amount),
+      }),
     }).catch((e) => e);
 
     try {

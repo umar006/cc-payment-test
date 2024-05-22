@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { DepositDTO } from './dtos/deposit.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('deposit')
-  async deposit(@Body() depositDto: Record<string, any>) {
+  async deposit(@Body() depositDto: DepositDTO) {
     const response = await this.appService.deposit(depositDto);
     return response;
   }

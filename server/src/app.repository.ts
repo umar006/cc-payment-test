@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
+import { DepositDTO } from './dtos/deposit.dto';
 import { histories } from './transaction-history.schema';
 import { User, users } from './user.schema';
 
@@ -16,7 +17,7 @@ export class AppRepository {
     private readonly db: DrizzlePostgres,
   ) {}
 
-  async deposit(fullName: string, depositDto: Record<string, any>) {
+  async deposit(fullName: string, depositDto: DepositDTO) {
     try {
       await this.db.transaction(
         async (tx) => {
