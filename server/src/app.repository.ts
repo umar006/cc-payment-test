@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { eq, sql } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from './database/drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
@@ -102,7 +102,10 @@ export class AppRepository {
   }
 
   async transactionHistories() {
-    const historyList = await this.db.select().from(histories);
+    const historyList = await this.db
+      .select()
+      .from(histories)
+      .orderBy(desc(histories.createdAt));
     return historyList;
   }
 }
