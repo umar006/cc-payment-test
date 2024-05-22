@@ -5,6 +5,7 @@ import { AppRepository } from './app.repository';
 import { AppService } from './app.service';
 import databaseConfig from './database/database.config';
 import { DatabaseModule } from './database/database.module';
+import { PaymentService } from './third-party/payment.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { DatabaseModule } from './database/database.module';
     DatabaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppRepository],
+  providers: [AppService, PaymentService, AppRepository],
 })
 export class AppModule {}

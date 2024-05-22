@@ -3,25 +3,19 @@ import { AppRepository } from './app.repository';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
 import { User } from './schemas/user.schema';
+import { PaymentService } from './third-party/payment.service';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly appRepo: AppRepository) {}
+  constructor(
+    private readonly appRepo: AppRepository,
+    private readonly paymentService: PaymentService,
+  ) {}
 
   async deposit(depositDto: DepositDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
-    await fetch('https://youdomain.com/deposit', {
-      signal: AbortSignal.timeout(100),
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${btoa('Umar Abdul Aziz Al-Faruq')}`,
-      },
-      body: JSON.stringify({
-        ...depositDto,
-        amount: parseFloat(depositDto.amount),
-      }),
-    }).catch((e) => e);
+    const res = await this.paymentService.deposit(depositDto);
 
     try {
       await this.appRepo.deposit(fullName, depositDto);
@@ -30,9 +24,9 @@ export class AppService {
     }
 
     return {
-      order_id: depositDto.order_id,
-      amount: depositDto.amount,
-      status: 1,
+      order_id: res.order_id,
+      amount: res.amount,
+      status: res.status,
     };
   }
 
