@@ -1,0 +1,1 @@
+ALTER TABLE "transaction_histories" ADD COLUMN "order_id" varchar NOT NULL;
