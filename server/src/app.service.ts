@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AppRepository } from './app.repository';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
-import { type User } from './user.schema';
+import { User } from './schemas/user.schema';
 
 @Injectable()
 export class AppService {

@@ -8,8 +8,8 @@ import { eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from './database/drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
-import { histories } from './transaction-history.schema';
-import { User, users } from './user.schema';
+import { histories } from './schemas/transaction-history.schema';
+import { User, users } from './schemas/user.schema';
 
 @Injectable()
 export class AppRepository {
