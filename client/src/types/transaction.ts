@@ -1,16 +1,16 @@
-export type Deposit = {
+export type DepositRequest = {
   order_id: string;
   amount: string;
   timestamp: Date;
 };
 
-export type Withdraw = {
+export type WithdrawRequest = {
   order_id: string;
   amount: string;
   timestamp: Date;
 };
 
-export type TransactionHistory = {
+export type History = {
   id: string;
   createdAt: string;
   type: string;

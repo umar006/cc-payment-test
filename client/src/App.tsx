@@ -6,13 +6,17 @@ import {
   createWithdraw,
   getHistories,
 } from "./services/transaction";
-import { type Deposit, type TransactionHistory, type Withdraw } from "./types";
+import type {
+  DepositRequest,
+  History,
+  WithdrawRequest,
+} from "./types/transaction";
 
 function App() {
   const [deposit, setDeposit] = useState("0.00");
   const [withdraw, setWithdraw] = useState("0.00");
 
-  const { data, isLoading } = useQuery<TransactionHistory[]>({
+  const { data, isLoading } = useQuery<History[]>({
     queryKey: ["histories"],
     queryFn: getHistories,
   });
@@ -33,7 +37,7 @@ function App() {
 
   const handleDepositSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const createDeposit: Deposit = {
+    const createDeposit: DepositRequest = {
       order_id: window.crypto.randomUUID(),
       amount: parseFloat(deposit).toFixed(2),
       timestamp: new Date(),
@@ -43,7 +47,7 @@ function App() {
 
   const handleWithdrawSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const createWithdraw: Withdraw = {
+    const createWithdraw: WithdrawRequest = {
       order_id: window.crypto.randomUUID(),
       amount: parseFloat(withdraw).toFixed(2),
       timestamp: new Date(),
