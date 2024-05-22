@@ -35,6 +35,8 @@ export class AppService {
   async withdraw(withdrawDto: WithdrawDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
+    withdrawDto.orderId = crypto.randomUUID();
+    withdrawDto.timestamp = Date.now();
     const res = await this.paymentService.withdraw(withdrawDto);
 
     try {

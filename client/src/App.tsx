@@ -50,9 +50,7 @@ function App() {
   const handleWithdrawSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const createWithdraw: WithdrawRequest = {
-      order_id: window.crypto.randomUUID(),
       amount: parseFloat(withdraw).toFixed(2),
-      timestamp: new Date(),
     };
     mutateWithdraw.mutate(createWithdraw);
   };
