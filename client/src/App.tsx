@@ -42,9 +42,7 @@ function App() {
   const handleDepositSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const createDeposit: DepositRequest = {
-      order_id: window.crypto.randomUUID(),
       amount: parseFloat(deposit).toFixed(2),
-      timestamp: new Date(),
     };
     mutateDeposit.mutate(createDeposit);
   };

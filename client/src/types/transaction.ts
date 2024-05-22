@@ -1,7 +1,5 @@
 export type DepositRequest = {
-  order_id: string;
   amount: string;
-  timestamp: Date;
 };
 
 export type WithdrawRequest = {
