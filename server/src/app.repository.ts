@@ -5,7 +5,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
-import { DRIZZLE_PROVIDER, type DrizzlePostgres } from './drizzle.provider';
+import { DRIZZLE_PROVIDER, DrizzlePostgres } from './database/drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
 import { histories } from './transaction-history.schema';
