@@ -33,17 +33,7 @@ export class AppService {
   async withdraw(withdrawDto: WithdrawDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
-    await fetch('https://youdomain.com/withdraw', {
-      signal: AbortSignal.timeout(100),
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${btoa('Umar Abdul Aziz Al-Faruq')}`,
-      },
-      body: JSON.stringify({
-        ...withdrawDto,
-        amount: parseFloat(withdrawDto.amount),
-      }),
-    }).catch((e) => e);
+    const res = await this.paymentService.withdraw(withdrawDto);
 
     try {
       await this.appRepo.withdraw(fullName, withdrawDto);
@@ -52,9 +42,9 @@ export class AppService {
     }
 
     return {
-      order_id: withdrawDto.order_id,
-      amount: withdrawDto.amount,
-      status: 1,
+      order_id: res.order_id,
+      amount: res.amount,
+      status: res.status,
     };
   }
 
