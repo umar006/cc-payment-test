@@ -1,5 +1,5 @@
 export class WithdrawDTO {
-  order_id: string;
+  orderId: string;
   amount: string;
   timestamp: string;
 }

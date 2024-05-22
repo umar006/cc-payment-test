@@ -15,7 +15,7 @@ export class AppService {
   async deposit(depositDto: DepositDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
-    depositDto.order_id = crypto.randomUUID();
+    depositDto.orderId = crypto.randomUUID();
     depositDto.timestamp = Date.now();
     const res = await this.paymentService.deposit(depositDto);
 

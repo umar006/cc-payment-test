@@ -1,5 +1,5 @@
 export class DepositDTO {
-  order_id: string;
+  orderId: string;
   amount: string;
   timestamp: number;
 }

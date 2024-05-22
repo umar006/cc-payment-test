@@ -18,7 +18,7 @@ export class PaymentService {
     }).catch((e) => e);
 
     return {
-      order_id: depositDTO.order_id,
+      order_id: depositDTO.orderId,
       amount: depositDTO.amount,
       status: 1,
     };
@@ -38,7 +38,7 @@ export class PaymentService {
     }).catch((e) => e);
 
     return {
-      order_id: withdrawDTO.order_id,
+      order_id: withdrawDTO.orderId,
       amount: withdrawDTO.amount,
       status: 1,
     };

@@ -40,7 +40,7 @@ export class AppRepository {
 
           await tx.insert(histories).values({
             createdAt: new Date(depositDto.timestamp),
-            orderId: depositDto.order_id,
+            orderId: depositDto.orderId,
             amount: depositDto.amount,
             type: 'deposit',
             status: 1,
@@ -85,7 +85,7 @@ export class AppRepository {
 
       await tx.insert(histories).values({
         createdAt: new Date(withdrawDto.timestamp),
-        orderId: withdrawDto.order_id,
+        orderId: withdrawDto.orderId,
         amount: withdrawDto.amount,
         type: 'withdraw',
         status: 1,
