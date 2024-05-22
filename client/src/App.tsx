@@ -1,11 +1,20 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
-import { type Deposit, type Withdraw } from "./types";
+import { type Deposit, type TransactionHistory, type Withdraw } from "./types";
 
 function App() {
   const [deposit, setDeposit] = useState("0.00");
   const [withdraw, setWithdraw] = useState("0.00");
+
+  const { data, isLoading } = useQuery<TransactionHistory[]>({
+    queryKey: ["histories"],
+    queryFn: async () => {
+      const response = await fetch("http://localhost:3000/histories");
+      const data = await response.json();
+      return data;
+    },
+  });
 
   const mutateDeposit = useMutation({
     mutationFn: (deposit: Deposit) => {
