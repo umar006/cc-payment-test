@@ -82,6 +82,42 @@ function App() {
     setWithdraw(withdrawVal);
   };
 
+  const transactionHistoryList = () => {
+    if (isLoading) {
+      return "Loading...";
+    }
+
+    const render = data?.map((val) => {
+      const formattedDate = new Date(val.createdAt).toLocaleString();
+      return (
+        <tr key={val.id}>
+          <td>{val.id}</td>
+          <td>{formattedDate}</td>
+          <td>{val.type}</td>
+          <td>{val.amount}</td>
+          <td>{val.status}</td>
+          <td>{val.name}</td>
+        </tr>
+      );
+    });
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>CreatedAt</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>{render}</tbody>
+      </table>
+    );
+  };
+
   return (
     <>
       <h2>deposit</h2>
@@ -110,6 +146,8 @@ function App() {
         </label>
         <button type="submit">withdraw</button>
       </form>
+      <h2>Transaction History List</h2>
+      {transactionHistoryList()}
     </>
   );
 }
