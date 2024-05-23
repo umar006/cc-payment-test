@@ -1,8 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { desc, eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from './database/drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
@@ -68,12 +64,6 @@ export class AppRepository {
             balance: '0',
           });
         } else {
-          const checkBalance =
-            parseFloat(user.balance) < parseFloat(withdrawDto.amount);
-          if (checkBalance) {
-            throw new UnprocessableEntityException('Insufficient balance');
-          }
-
           await tx
             .update(users)
             .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
