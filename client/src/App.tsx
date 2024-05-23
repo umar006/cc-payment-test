@@ -79,8 +79,8 @@ function App() {
     const render = data?.map((val) => {
       const formattedDate = new Date(val.createdAt).toLocaleString();
       return (
-        <tr key={val.id}>
-          <td>{val.id}</td>
+        <tr key={val.orderId}>
+          <td>{val.orderId}</td>
           <td>{formattedDate}</td>
           <td>{val.type}</td>
           <td>{val.amount}</td>
@@ -94,7 +94,7 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>OrderID</th>
             <th>CreatedAt</th>
             <th>Type</th>
             <th>Amount</th>

@@ -8,6 +8,7 @@ export type WithdrawRequest = {
 
 export type History = {
   id: string;
+  orderId: string;
   createdAt: string;
   type: string;
   amount: string;
