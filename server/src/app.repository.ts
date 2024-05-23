@@ -8,7 +8,10 @@ import { desc, eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from './database/drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
-import { histories } from './schemas/transaction-history.schema';
+import {
+  TransactionHistory,
+  histories,
+} from './schemas/transaction-history.schema';
 import { User, users } from './schemas/user.schema';
 
 @Injectable()
@@ -103,7 +106,7 @@ export class AppRepository {
     return user;
   }
 
-  async transactionHistories() {
+  async transactionHistories(): Promise<TransactionHistory[]> {
     const historyList = await this.db
       .select()
       .from(histories)
