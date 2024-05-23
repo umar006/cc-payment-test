@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { DepositDTO } from 'src/dtos/deposit.dto';
 import { WithdrawDTO } from 'src/dtos/withdraw.dto';
+import {
+  PaymentDepositResponse,
+  PaymentWithdrawResponse,
+} from './payment-transaction.dto';
+import { PaymentTransaction } from './payment-transaction.interface';
 
 @Injectable()
-export class PaymentService {
-  async deposit(depositDTO: DepositDTO) {
+export class PaymentService implements PaymentTransaction {
+  async deposit(depositDTO: DepositDTO): Promise<PaymentDepositResponse> {
     await fetch('https://youdomain.com/deposit', {
       signal: AbortSignal.timeout(100),
       method: 'POST',
@@ -19,12 +24,12 @@ export class PaymentService {
 
     return {
       order_id: depositDTO.orderId,
-      amount: depositDTO.amount,
+      amount: parseFloat(depositDTO.amount),
       status: 1,
     };
   }
 
-  async withdraw(withdrawDTO: WithdrawDTO) {
+  async withdraw(withdrawDTO: WithdrawDTO): Promise<PaymentWithdrawResponse> {
     await fetch('https://youdomain.com/withdraw', {
       signal: AbortSignal.timeout(100),
       method: 'POST',
@@ -39,7 +44,7 @@ export class PaymentService {
 
     return {
       order_id: withdrawDTO.orderId,
-      amount: withdrawDTO.amount,
+      amount: parseFloat(withdrawDTO.amount),
       status: 1,
     };
   }
