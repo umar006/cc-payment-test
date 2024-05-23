@@ -1,8 +1,10 @@
 import { IsString } from 'class-validator';
 
 export class DepositDTO {
-  orderId: string;
+  orderId = crypto.randomUUID();
+
   @IsString()
   amount: string;
-  timestamp: number;
+
+  timestamp = Date.now();
 }
