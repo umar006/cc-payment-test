@@ -20,7 +20,7 @@ export class AppRepository {
     private readonly db: DrizzlePostgres,
   ) {}
 
-  async deposit(fullName: string, depositDto: DepositDTO) {
+  async createDeposit(fullName: string, depositDto: DepositDTO) {
     await this.db.transaction(
       async (tx) => {
         const [user] = await tx
