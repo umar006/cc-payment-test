@@ -9,13 +9,13 @@ export class AppController {
 
   @Post('deposit')
   async deposit(@Body() depositDto: DepositDTO) {
-    const response = await this.appService.deposit(depositDto);
+    const response = await this.appService.createDeposit(depositDto);
     return response;
   }
 
   @Post('withdraw')
   async withdraw(@Body() withdrawDto: WithdrawDTO) {
-    const response = await this.appService.withdraw(withdrawDto);
+    const response = await this.appService.createWithdraw(withdrawDto);
     return response;
   }
 

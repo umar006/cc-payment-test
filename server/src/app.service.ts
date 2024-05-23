@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AppTransaction } from './app.interface';
 import { AppRepository } from './app.repository';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
@@ -6,13 +7,13 @@ import { User } from './schemas/user.schema';
 import { PaymentService } from './third-party/payment.service';
 
 @Injectable()
-export class AppService {
+export class AppService implements AppTransaction {
   constructor(
     private readonly appRepo: AppRepository,
     private readonly paymentService: PaymentService,
   ) {}
 
-  async deposit(depositDto: DepositDTO) {
+  async createDeposit(depositDto: DepositDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     depositDto.orderId = crypto.randomUUID();
@@ -26,13 +27,13 @@ export class AppService {
     }
 
     return {
-      order_id: res.order_id,
+      orderId: res.order_id,
       amount: res.amount,
       status: res.status,
     };
   }
 
-  async withdraw(withdrawDto: WithdrawDTO) {
+  async createWithdraw(withdrawDto: WithdrawDTO) {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     withdrawDto.orderId = crypto.randomUUID();
@@ -46,7 +47,7 @@ export class AppService {
     }
 
     return {
-      order_id: res.order_id,
+      orderId: res.order_id,
       amount: res.amount,
       status: res.status,
     };
