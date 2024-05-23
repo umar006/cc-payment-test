@@ -1,7 +1,6 @@
 import {
   Inject,
   Injectable,
-  InternalServerErrorException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { desc, eq, sql } from 'drizzle-orm';
@@ -22,44 +21,37 @@ export class AppRepository {
   ) {}
 
   async deposit(fullName: string, depositDto: DepositDTO) {
-    try {
-      await this.db.transaction(
-        async (tx) => {
-          const [user] = await tx
-            .select()
-            .from(users)
-            .where(eq(users.name, fullName));
+    await this.db.transaction(
+      async (tx) => {
+        const [user] = await tx
+          .select()
+          .from(users)
+          .where(eq(users.name, fullName));
 
-          if (!user) {
-            await tx.insert(users).values({
-              name: fullName,
-              balance: depositDto.amount,
-            });
-          } else {
-            await tx
-              .update(users)
-              .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
-          }
-
-          await tx.insert(histories).values({
-            createdAt: new Date(depositDto.timestamp),
-            orderId: depositDto.orderId,
-            amount: depositDto.amount,
-            type: 'deposit',
-            status: 1,
+        if (!user) {
+          await tx.insert(users).values({
             name: fullName,
+            balance: depositDto.amount,
           });
-        },
-        {
-          isolationLevel: 'serializable',
-        },
-      );
-    } catch (err) {
-      if (err instanceof TypeError) {
-        throw new InternalServerErrorException(err.message);
-      }
-      throw new InternalServerErrorException('unhandle error');
-    }
+        } else {
+          await tx
+            .update(users)
+            .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
+        }
+
+        await tx.insert(histories).values({
+          createdAt: new Date(depositDto.timestamp),
+          orderId: depositDto.orderId,
+          amount: depositDto.amount,
+          type: 'deposit',
+          status: 1,
+          name: fullName,
+        });
+      },
+      {
+        isolationLevel: 'serializable',
+      },
+    );
   }
 
   async withdraw(fullName: string, withdrawDto: WithdrawDTO) {
