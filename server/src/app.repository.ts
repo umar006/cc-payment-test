@@ -89,7 +89,7 @@ export class AppRepository {
     });
   }
 
-  async balance(fullName: string): Promise<User> {
+  async getBalance(fullName: string): Promise<User> {
     const [user] = await this.db
       .select()
       .from(users)

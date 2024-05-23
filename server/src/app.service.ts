@@ -60,7 +60,7 @@ export class AppService implements AppTransaction {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     try {
-      const user = await this.appRepo.balance(fullName);
+      const user = await this.appRepo.getBalance(fullName);
       return user;
     } catch (err) {
       throw err;
