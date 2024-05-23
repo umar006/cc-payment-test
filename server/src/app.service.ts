@@ -5,6 +5,8 @@ import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
 import { User } from './schemas/user.schema';
 import { PaymentService } from './third-party/payment.service';
+import { DepositResponse } from './types/deposit-response.type';
+import { WithdrawResponse } from './types/withdraw-response.type';
 
 @Injectable()
 export class AppService implements AppTransaction {
@@ -13,7 +15,7 @@ export class AppService implements AppTransaction {
     private readonly paymentService: PaymentService,
   ) {}
 
-  async createDeposit(depositDto: DepositDTO) {
+  async createDeposit(depositDto: DepositDTO): Promise<DepositResponse> {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     depositDto.orderId = crypto.randomUUID();
@@ -33,7 +35,7 @@ export class AppService implements AppTransaction {
     };
   }
 
-  async createWithdraw(withdrawDto: WithdrawDTO) {
+  async createWithdraw(withdrawDto: WithdrawDTO): Promise<WithdrawResponse> {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     withdrawDto.orderId = crypto.randomUUID();
