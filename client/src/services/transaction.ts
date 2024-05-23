@@ -1,3 +1,4 @@
+import { ErrorResponse } from "../types/error";
 import type {
   DepositRequest,
   History,
@@ -17,13 +18,21 @@ export const createDeposit = async (deposit: DepositRequest) => {
 };
 
 export const createWithdraw = async (withdraw: WithdrawRequest) => {
-  return await fetch(`${BASE_URL}/withdraw`, {
+  const res = await fetch(`${BASE_URL}/withdraw`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(withdraw),
   });
+
+  if (!res.ok) {
+    const error = (await res.json()) as ErrorResponse;
+    if (Array.isArray(error.message)) {
+      throw new Error(error.message[0]);
+    }
+    throw new Error(error.message);
+  }
 };
 
 export const getHistories = async (): Promise<History[]> => {

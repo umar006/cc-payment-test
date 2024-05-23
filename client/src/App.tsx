@@ -15,6 +15,7 @@ import type {
 function App() {
   const [deposit, setDeposit] = useState("0.00");
   const [withdraw, setWithdraw] = useState("0.00");
+  const [error, setError] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -36,6 +37,12 @@ function App() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["histories"] });
       setWithdraw("0.00");
+    },
+    onError: (error) => {
+      setError(error.message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     },
   });
 
@@ -123,6 +130,7 @@ function App() {
         <button type="submit">deposit</button>
       </form>
       <h2>withdraw</h2>
+      {error !== "" && <div className="error">{error}</div>}
       <form onSubmit={handleWithdrawSubmit}>
         <label>
           <input
