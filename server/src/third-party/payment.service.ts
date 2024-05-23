@@ -23,7 +23,7 @@ export class PaymentService implements PaymentTransaction {
     }).catch((e) => e);
 
     return {
-      order_id: depositDTO.orderId,
+      orderId: depositDTO.orderId,
       amount: parseFloat(depositDTO.amount),
       status: 1,
     };
@@ -43,7 +43,7 @@ export class PaymentService implements PaymentTransaction {
     }).catch((e) => e);
 
     return {
-      order_id: withdrawDTO.orderId,
+      orderId: withdrawDTO.orderId,
       amount: parseFloat(withdrawDTO.amount),
       status: 1,
     };

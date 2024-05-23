@@ -30,7 +30,7 @@ export class AppService implements AppTransaction {
     }
 
     return {
-      orderId: res.order_id,
+      orderId: res.orderId,
       amount: res.amount,
       status: res.status,
     };
@@ -50,7 +50,7 @@ export class AppService implements AppTransaction {
     }
 
     return {
-      orderId: res.order_id,
+      orderId: res.orderId,
       amount: res.amount,
       status: res.status,
     };
