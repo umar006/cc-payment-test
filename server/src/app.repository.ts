@@ -98,7 +98,7 @@ export class AppRepository {
     return user;
   }
 
-  async transactionHistories(): Promise<TransactionHistory[]> {
+  async getTransactionHistories(): Promise<TransactionHistory[]> {
     const historyList = await this.db
       .select()
       .from(histories)

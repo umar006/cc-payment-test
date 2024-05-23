@@ -69,7 +69,7 @@ export class AppService implements AppTransaction {
 
   async getTransactionHistories(): Promise<TransactionHistory[]> {
     try {
-      const historyList = await this.appRepo.transactionHistories();
+      const historyList = await this.appRepo.getTransactionHistories();
       return historyList;
     } catch (err) {
       throw err;
