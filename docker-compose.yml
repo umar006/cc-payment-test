@@ -1,0 +1,22 @@
+services:
+  client:
+    image: cc-client
+    container_name: cc-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+  server:
+    image: cc-server
+    container_name: cc-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - ./server/.env
+    restart: unless-stopped
