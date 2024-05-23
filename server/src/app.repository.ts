@@ -55,38 +55,43 @@ export class AppRepository {
   }
 
   async createWithdraw(fullName: string, withdrawDto: WithdrawDTO) {
-    await this.db.transaction(async (tx) => {
-      const [user] = await tx
-        .select()
-        .from(users)
-        .where(eq(users.name, fullName));
+    await this.db.transaction(
+      async (tx) => {
+        const [user] = await tx
+          .select()
+          .from(users)
+          .where(eq(users.name, fullName));
 
-      if (!user) {
-        await tx.insert(users).values({
-          name: 'Umar Abdul Aziz Al-Faruq',
-          balance: '0',
-        });
-      } else {
-        const checkBalance =
-          parseFloat(user.balance) < parseFloat(withdrawDto.amount);
-        if (checkBalance) {
-          throw new UnprocessableEntityException('Insufficient balance');
+        if (!user) {
+          await tx.insert(users).values({
+            name: 'Umar Abdul Aziz Al-Faruq',
+            balance: '0',
+          });
+        } else {
+          const checkBalance =
+            parseFloat(user.balance) < parseFloat(withdrawDto.amount);
+          if (checkBalance) {
+            throw new UnprocessableEntityException('Insufficient balance');
+          }
+
+          await tx
+            .update(users)
+            .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
         }
 
-        await tx
-          .update(users)
-          .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
-      }
-
-      await tx.insert(histories).values({
-        createdAt: new Date(withdrawDto.timestamp),
-        orderId: withdrawDto.orderId,
-        amount: withdrawDto.amount,
-        type: 'withdraw',
-        status: 1,
-        name: fullName,
-      });
-    });
+        await tx.insert(histories).values({
+          createdAt: new Date(withdrawDto.timestamp),
+          orderId: withdrawDto.orderId,
+          amount: withdrawDto.amount,
+          type: 'withdraw',
+          status: 1,
+          name: fullName,
+        });
+      },
+      {
+        isolationLevel: 'serializable',
+      },
+    );
   }
 
   async getBalance(fullName: string): Promise<User> {
