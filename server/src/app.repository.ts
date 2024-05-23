@@ -60,7 +60,7 @@ export class AppRepository {
 
         if (!user) {
           await tx.insert(users).values({
-            name: 'Umar Abdul Aziz Al-Faruq',
+            name: fullName,
             balance: '0',
           });
         } else {
