@@ -54,7 +54,7 @@ export class AppRepository {
     );
   }
 
-  async withdraw(fullName: string, withdrawDto: WithdrawDTO) {
+  async createWithdraw(fullName: string, withdrawDto: WithdrawDTO) {
     await this.db.transaction(async (tx) => {
       const [user] = await tx
         .select()
