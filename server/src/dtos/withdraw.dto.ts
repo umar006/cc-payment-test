@@ -1,10 +1,13 @@
+import { Exclude } from 'class-transformer';
 import { IsString } from 'class-validator';
 
 export class WithdrawDTO {
+  @Exclude()
   orderId = crypto.randomUUID();
 
   @IsString()
   amount: string;
 
+  @Exclude()
   timestamp = Date.now();
 }
