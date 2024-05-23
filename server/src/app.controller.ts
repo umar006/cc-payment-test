@@ -21,13 +21,13 @@ export class AppController {
 
   @Get('balance')
   async balance() {
-    const response = await this.appService.balance();
+    const response = await this.appService.getBalance();
     return response;
   }
 
   @Get('histories')
   async transactionHistories() {
-    const response = await this.appService.transactionHistories();
+    const response = await this.appService.getTransactionHistories();
     return response;
   }
 

@@ -7,6 +7,7 @@ import { User } from './schemas/user.schema';
 import { PaymentService } from './third-party/payment.service';
 import { DepositResponse } from './types/deposit-response.type';
 import { WithdrawResponse } from './types/withdraw-response.type';
+import { TransactionHistory } from './schemas/transaction-history.schema';
 
 @Injectable()
 export class AppService implements AppTransaction {
@@ -55,7 +56,7 @@ export class AppService implements AppTransaction {
     };
   }
 
-  async balance(): Promise<User> {
+  async getBalance(): Promise<User> {
     const fullName = 'Umar Abdul Aziz Al-Faruq';
 
     try {
@@ -66,7 +67,7 @@ export class AppService implements AppTransaction {
     }
   }
 
-  async transactionHistories() {
+  async getTransactionHistories(): Promise<TransactionHistory[]> {
     try {
       const historyList = await this.appRepo.transactionHistories();
       return historyList;

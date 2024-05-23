@@ -16,3 +16,5 @@ export const histories = pgTable('transaction_histories', {
   status: integer('status').notNull(),
   name: varchar('name').notNull(),
 });
+
+export type TransactionHistory = typeof histories.$inferSelect;
