@@ -3,6 +3,7 @@ import { desc, eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from './database/drizzle.provider';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
+import { AppTransactionRepository } from './interfaces/app-transaction-repository.interface';
 import {
   TransactionHistory,
   histories,
@@ -10,7 +11,7 @@ import {
 import { User, users } from './schemas/user.schema';
 
 @Injectable()
-export class AppRepository {
+export class AppRepository implements AppTransactionRepository {
   constructor(
     @Inject(DRIZZLE_PROVIDER)
     private readonly db: DrizzlePostgres,
