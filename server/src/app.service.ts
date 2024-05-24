@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { AppTransaction } from './app.interface';
 import { AppRepository } from './app.repository';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
+import { AppTransaction } from './interfaces/app-transaction-service.interface';
 import { TransactionHistory } from './schemas/transaction-history.schema';
 import { User } from './schemas/user.schema';
 import { PaymentService } from './third-party/payment.service';
