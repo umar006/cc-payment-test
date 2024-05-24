@@ -19,7 +19,7 @@ function App() {
 
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery<History[]>({
+  const { data, isLoading, isError } = useQuery<History[]>({
     queryKey: ["histories"],
     queryFn: getHistories,
   });
@@ -29,6 +29,12 @@ function App() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["histories"] });
       setDeposit("0.00");
+    },
+    onError: (error) => {
+      setError(error.message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     },
   });
 
@@ -79,23 +85,37 @@ function App() {
   };
 
   const transactionHistoryList = () => {
-    if (isLoading) {
-      return "Loading...";
-    }
+    const render = () => {
+      if (isLoading) {
+        return (
+          <tr>
+            <td colSpan={6}>Loading...</td>
+          </tr>
+        );
+      }
 
-    const render = data?.map((val) => {
-      const formattedDate = new Date(val.createdAt).toLocaleString();
-      return (
-        <tr key={val.orderId}>
-          <td>{val.orderId}</td>
-          <td>{formattedDate}</td>
-          <td>{val.type}</td>
-          <td>{val.amount}</td>
-          <td>{val.status}</td>
-          <td>{val.name}</td>
-        </tr>
-      );
-    });
+      if (isError) {
+        return (
+          <tr>
+            <td colSpan={6}>Failed to load transaction histories</td>
+          </tr>
+        );
+      }
+
+      return data?.map((val) => {
+        const formattedDate = new Date(val.createdAt).toLocaleString();
+        return (
+          <tr key={val.orderId}>
+            <td>{val.orderId}</td>
+            <td>{formattedDate}</td>
+            <td>{val.type}</td>
+            <td>{val.amount}</td>
+            <td>{val.status}</td>
+            <td>{val.name}</td>
+          </tr>
+        );
+      });
+    };
 
     return (
       <table>
@@ -109,7 +129,7 @@ function App() {
             <th>Name</th>
           </tr>
         </thead>
-        <tbody>{render}</tbody>
+        <tbody>{render()}</tbody>
       </table>
     );
   };
@@ -117,6 +137,7 @@ function App() {
   return (
     <>
       <h2>deposit</h2>
+      {error !== "" && <div className="error">{error}</div>}
       <form onSubmit={handleDepositSubmit}>
         <label>
           <input
