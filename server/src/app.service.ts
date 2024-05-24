@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AppRepository } from './app.repository';
 import { DepositDTO } from './dtos/deposit.dto';
 import { WithdrawDTO } from './dtos/withdraw.dto';
-import { AppTransaction } from './interfaces/app-transaction-service.interface';
+import { AppTransactionService } from './interfaces/app-transaction-service.interface';
 import { TransactionHistory } from './schemas/transaction-history.schema';
 import { User } from './schemas/user.schema';
 import { PaymentService } from './third-party/payment.service';
@@ -10,7 +10,7 @@ import { DepositResponse } from './types/deposit-response.type';
 import { WithdrawResponse } from './types/withdraw-response.type';
 
 @Injectable()
-export class AppService implements AppTransaction {
+export class AppService implements AppTransactionService {
   constructor(
     private readonly appRepo: AppRepository,
     private readonly paymentService: PaymentService,

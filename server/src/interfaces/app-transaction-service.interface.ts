@@ -5,7 +5,7 @@ import { User } from 'src/schemas/user.schema';
 import { DepositResponse } from 'src/types/deposit-response.type';
 import { WithdrawResponse } from 'src/types/withdraw-response.type';
 
-export interface AppTransaction {
+export interface AppTransactionService {
   createDeposit(depositDTO: DepositDTO): Promise<DepositResponse>;
   createWithdraw(withdrawDTO: WithdrawDTO): Promise<WithdrawResponse>;
   getBalance(): Promise<User>;
