@@ -12,6 +12,6 @@ export type History = {
   createdAt: string;
   type: string;
   amount: string;
-  status: string;
+  status: number;
   name: string;
 };
