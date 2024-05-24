@@ -85,27 +85,37 @@ function App() {
   };
 
   const transactionHistoryList = () => {
-    if (isLoading) {
-      return "Loading...";
-    }
+    const render = () => {
+      if (isLoading) {
+        return (
+          <tr>
+            <td colSpan={6}>Loading...</td>
+          </tr>
+        );
+      }
 
-    if (isError) {
-      return "Failed to load transaction histories";
-    }
+      if (isError) {
+        return (
+          <tr>
+            <td colSpan={6}>Failed to load transaction histories</td>
+          </tr>
+        );
+      }
 
-    const render = data?.map((val) => {
-      const formattedDate = new Date(val.createdAt).toLocaleString();
-      return (
-        <tr key={val.orderId}>
-          <td>{val.orderId}</td>
-          <td>{formattedDate}</td>
-          <td>{val.type}</td>
-          <td>{val.amount}</td>
-          <td>{val.status}</td>
-          <td>{val.name}</td>
-        </tr>
-      );
-    });
+      return data?.map((val) => {
+        const formattedDate = new Date(val.createdAt).toLocaleString();
+        return (
+          <tr key={val.orderId}>
+            <td>{val.orderId}</td>
+            <td>{formattedDate}</td>
+            <td>{val.type}</td>
+            <td>{val.amount}</td>
+            <td>{val.status}</td>
+            <td>{val.name}</td>
+          </tr>
+        );
+      });
+    };
 
     return (
       <table>
@@ -119,7 +129,7 @@ function App() {
             <th>Name</th>
           </tr>
         </thead>
-        <tbody>{render}</tbody>
+        <tbody>{render()}</tbody>
       </table>
     );
   };
