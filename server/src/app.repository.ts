@@ -24,15 +24,17 @@ export class AppRepository {
           .from(users)
           .where(eq(users.name, fullName));
 
-        if (!user) {
-          await tx.insert(users).values({
-            name: fullName,
-            balance: depositDto.amount,
-          });
-        } else {
-          await tx
-            .update(users)
-            .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
+        if (depositDto.status === 1) {
+          if (!user) {
+            await tx.insert(users).values({
+              name: fullName,
+              balance: depositDto.amount,
+            });
+          } else {
+            await tx
+              .update(users)
+              .set({ balance: sql`${users.balance} + ${depositDto.amount}` });
+          }
         }
 
         await tx.insert(histories).values({
@@ -40,7 +42,7 @@ export class AppRepository {
           orderId: depositDto.orderId,
           amount: depositDto.amount,
           type: 'deposit',
-          status: 1,
+          status: depositDto.status,
           name: fullName,
         });
       },

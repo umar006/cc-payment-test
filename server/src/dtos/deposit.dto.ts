@@ -10,4 +10,7 @@ export class DepositDTO {
 
   @Exclude()
   timestamp = new Date();
+
+  @Exclude()
+  status: number;
 }

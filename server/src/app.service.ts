@@ -22,6 +22,7 @@ export class AppService implements AppTransaction {
     const res = await this.paymentService.deposit(depositDto);
 
     try {
+      depositDto.status = res.status;
       await this.appRepo.createDeposit(fullName, depositDto);
     } catch (err) {
       throw err;
