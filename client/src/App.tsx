@@ -30,6 +30,12 @@ function App() {
       queryClient.invalidateQueries({ queryKey: ["histories"] });
       setDeposit("0.00");
     },
+    onError: (error) => {
+      setError(error.message);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    },
   });
 
   const mutateWithdraw = useMutation({
@@ -117,6 +123,7 @@ function App() {
   return (
     <>
       <h2>deposit</h2>
+      {error !== "" && <div className="error">{error}</div>}
       <form onSubmit={handleDepositSubmit}>
         <label>
           <input
