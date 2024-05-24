@@ -34,9 +34,4 @@ export class AppController {
     const response = await this.appService.getTransactionHistories();
     return response;
   }
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
 }

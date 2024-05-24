@@ -71,8 +71,4 @@ export class AppService implements AppTransaction {
       throw err;
     }
   }
-
-  getHello(): string {
-    return 'Hello World!';
-  }
 }
