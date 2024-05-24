@@ -9,5 +9,5 @@ export class WithdrawDTO {
   amount: string;
 
   @Exclude()
-  timestamp = Date.now();
+  timestamp = new Date();
 }

@@ -9,5 +9,5 @@ export class DepositDTO {
   amount: string;
 
   @Exclude()
-  timestamp = Date.now();
+  timestamp = new Date();
 }
