@@ -41,6 +41,7 @@ export class AppService implements AppTransaction {
     const res = await this.paymentService.withdraw(withdrawDto);
 
     try {
+      withdrawDto.status = res.status;
       await this.appRepo.createWithdraw(fullName, withdrawDto);
     } catch (err) {
       throw err;

@@ -10,4 +10,7 @@ export class WithdrawDTO {
 
   @Exclude()
   timestamp = new Date();
+
+  @Exclude()
+  status: number;
 }

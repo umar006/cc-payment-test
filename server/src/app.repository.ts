@@ -60,15 +60,17 @@ export class AppRepository {
           .from(users)
           .where(eq(users.name, fullName));
 
-        if (!user) {
-          await tx.insert(users).values({
-            name: fullName,
-            balance: '0',
-          });
-        } else {
-          await tx
-            .update(users)
-            .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
+        if (withdrawDto.status === 1) {
+          if (!user) {
+            await tx.insert(users).values({
+              name: fullName,
+              balance: '0',
+            });
+          } else {
+            await tx
+              .update(users)
+              .set({ balance: sql`${users.balance} - ${withdrawDto.amount}` });
+          }
         }
 
         await tx.insert(histories).values({
@@ -76,7 +78,7 @@ export class AppRepository {
           orderId: withdrawDto.orderId,
           amount: withdrawDto.amount,
           type: 'withdraw',
-          status: 1,
+          status: withdrawDto.status,
           name: fullName,
         });
       },
