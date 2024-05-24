@@ -19,7 +19,7 @@ function App() {
 
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery<History[]>({
+  const { data, isLoading, isError } = useQuery<History[]>({
     queryKey: ["histories"],
     queryFn: getHistories,
   });
@@ -87,6 +87,10 @@ function App() {
   const transactionHistoryList = () => {
     if (isLoading) {
       return "Loading...";
+    }
+
+    if (isError) {
+      return "Failed to load transaction histories";
     }
 
     const render = data?.map((val) => {

@@ -46,6 +46,14 @@ export const createWithdraw = async (withdraw: WithdrawRequest) => {
 export const getHistories = async (): Promise<History[]> => {
   const response = await fetch("http://localhost:3000/histories");
 
+  if (!response.ok) {
+    const error = (await response.json()) as ErrorResponse;
+    if (Array.isArray(error.message)) {
+      throw new Error(error.message[0]);
+    }
+    throw new Error(error.message);
+  }
+
   const data = await response.json();
   return data;
 };
