@@ -110,7 +110,7 @@ function App() {
             <td>{formattedDate}</td>
             <td>{val.type}</td>
             <td>{val.amount}</td>
-            <td>{val.status}</td>
+            <td>{val.status === 1 ? "success" : "failed"}</td>
             <td>{val.name}</td>
           </tr>
         );
